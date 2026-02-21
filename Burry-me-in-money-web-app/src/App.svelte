@@ -83,8 +83,8 @@
         coin.rotation += coin.rotationSpeed; // Rotate coin
 
         // Ground collision
-        if (coin.y > window.innerHeight * groundLevel - coinSize) {
-          coin.y = window.innerHeight * groundLevel - coinSize;
+        if (coin.y > window.innerHeight  - coinSize) {
+          coin.y = window.innerHeight  - coinSize;
           coin.vy *= -0.5; // Bounce (reduce velocity)
           coin.vx *= 0.8; // Dampen horizontal velocity
 
