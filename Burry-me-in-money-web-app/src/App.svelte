@@ -6,7 +6,7 @@
   let manPosition = { x: 0, y: 0 }; // Position of the man image
   const coinSize = 25; // Adjust as needed
   const groundLevel = 0.8; // Percentage of screen height that represents the ground
-  const coinImageSrc = 'coin.png'; // Path to your coin image
+  const coinImageSrc = '../src/coin.png'; // Path to your coin image
   let accumulatedCoins = 0; // Keep track of coins to batch creation
   const coinBatchSize = 5;    // Create coins in batches
 
