@@ -118,11 +118,11 @@
   on:mousemove="{handleMouseMove}"
 />
 
-</p><main>
+<main>
   <button on:click="{reset}">Reset</button>
   <div class="money-container">
     <img
-      src="man.png"
+      src="../src/man.png"
       alt="Little Man"
 style:position="absolute"
 style:left="{manPosition.x}px"
