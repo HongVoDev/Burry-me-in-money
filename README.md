@@ -1,2 +1,2 @@
-# Burry-me-in-money
+Hold to make it rain
 ![Quick demo gif](Demo.gif)
