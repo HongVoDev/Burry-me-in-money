@@ -9,6 +9,8 @@
   const coinImageSrc = '../src/coin.png'; // Path to your coin image
   let accumulatedCoins = 0; // Keep track of coins to batch creation
   const coinBatchSize = 5;    // Create coins in batches
+  const initialStackHeight = 100; // Number of coins to initially stack on the ground
+  const secondaryStackStart = 55; // Number of coins before secondary stack begins
 
   function startRain() {
     isRaining = true;
@@ -53,7 +55,8 @@
       id: Math.random(), // Simple unique ID
       rotation: Math.random() * 360, // Initial random rotation
       rotationSpeed: (Math.random() - 0.5) * 10, // Rotation speed
-      isSettled: false
+      isSettled: false,
+      stackLevel: 0 // Add a stack level property
     }];
   }
 
@@ -75,16 +78,26 @@
 
   // Game Loop (Physics Simulation)
   function updatePhysics() {
-    coins = coins.map(coin => {
+    coins = coins.map((coin, index) => {
       if (!coin.isSettled) {
         coin.vy += coin.gravity; // Apply gravity
         coin.x += coin.vx;      // Apply horizontal velocity
         coin.y += coin.vy;      // Apply vertical velocity
         coin.rotation += coin.rotationSpeed; // Rotate coin
 
+        // Ground collision logic
+        let adjustedGroundLevel = window.innerHeight - coinSize; // Default ground
+
+        if (coins.length > initialStackHeight) {
+            if (index >= initialStackHeight) {
+              coin.stackLevel = Math.floor((index - initialStackHeight) / 5);
+              adjustedGroundLevel -= coin.stackLevel * 0.5; // Adjust ground for stack
+            }
+        }
+      
         // Ground collision
-        if (coin.y > window.innerHeight  - coinSize) {
-          coin.y = window.innerHeight  - coinSize;
+        if (coin.y > adjustedGroundLevel) {
+          coin.y = adjustedGroundLevel;
           coin.vy *= -0.5; // Bounce (reduce velocity)
           coin.vx *= 0.8; // Dampen horizontal velocity
 
@@ -122,25 +135,25 @@
   <button on:click="{reset}">Reset</button>
   <div class="money-container">
     <img
-      src="../src/man.png"
-      alt="Little Man"
-style:position="absolute"
-style:left="{manPosition.x}px"
-style:bottom="0"
-style:zIndex="10"    />
+      src='../src/man.png'
+      alt='Little Man'
+style:position='absolute'
+style:left='{manPosition.x}px'
+style:bottom='0'
+style:zIndex='10'    />
     {#each coins as coin (coin.id)}
       <img
-        src="{coinImageSrc}"
-        alt="Coin"
-        style:position="absolute"
-        style:left="{coin.x}px"
-        style:top="{coin.y}px"
-        style:width="{coinSize}px"
-        style:height="{coinSize}px"
-        style:transform="rotate({coin.rotation}deg)"
-        style:z-index="5"
-        style:opacity="{coin.isSettled ? 0.8 : 1}"
-       style:transition="opacity 0.3s ease-in-out"
+        src='{coinImageSrc}'
+        alt='Coin'
+        style:position='absolute'
+        style:left='{coin.x}px'
+        style:top='{coin.y}px'
+        style:width='{coinSize}px'
+        style:height='{coinSize}px'
+        style:transform='rotate({coin.rotation}deg)'
+        style:z-index='5'
+        style:opacity='{coin.isSettled ? 0.8 : 1}'
+       style:transition='opacity 0.3s ease-in-out'
       />
     {/each}
   </div>
