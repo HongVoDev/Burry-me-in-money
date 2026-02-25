@@ -4,9 +4,9 @@
   let isRaining = false;
   let coins = [];
   let manPosition = { x: 0, y: 0 }; // Position of the man image
-  const coinSize = 25; // Adjust as needed
+  let coinSize = 25; // Adjust as needed
   const groundLevel = 0.8; // Percentage of screen height that represents the ground
-  const coinImageSrc = '../src/coin.png'; // Path to your coin image
+  let currencyImageSrc = '../src/coin.png'; // Path to your coin image
   let accumulatedCoins = 0; // Keep track of coins to batch creation
   const coinBatchSize = 5;    // Create coins in batches
   const initialStackHeight = 100; // Number of coins to initially stack on the ground
@@ -60,6 +60,16 @@
     }];
   }
 
+  function switchCurrency(currency) {
+    if (currency == 'cash')   { 
+      currencyImageSrc = '../src/cash.png';
+      coinSize = 60;
+    }
+    else if (currency == 'coin')  {  
+      currencyImageSrc = '../src/coin.png';
+      coinSize = 20;
+    }
+  }
 
   function reset() {
     coins = [];
@@ -133,6 +143,13 @@
 
 <main>
   <button on:click="{reset}">Reset</button>
+  <span>Burry me in</span> 
+  <button on:click={() => switchCurrency('cash')}
+  style:border-radius=50%>Cash</button>
+  <button on:click={() => switchCurrency('coin')}
+  style:border-radius=50%;>Coins</button>
+
+  
   <div class="money-container">
     <img
       src='../src/man.png'
@@ -143,7 +160,7 @@ style:bottom='0'
 style:zIndex='10'    />
     {#each coins as coin (coin.id)}
       <img
-        src='{coinImageSrc}'
+        src='{currencyImageSrc}'
         alt='Coin'
         style:position='absolute'
         style:left='{coin.x}px'
